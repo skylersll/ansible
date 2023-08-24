@@ -1,0 +1,14 @@
+---
+- name: Gather package facts
+  hosts: all
+  tasks:
+    - name: Gather package facts
+      apt:
+        list: yes
+      register: package_facts
+
+    - name: Identify packages with updates
+      debug:
+        var: item
+      loop: "{{ package_facts.packages }}"
+      when: item.version != item.latest_version
